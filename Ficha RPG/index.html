@@ -1,0 +1,191 @@
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ficha de Personagem - Cyberpunk</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron&display=swap');
+
+        body { 
+            font-family: 'Orbitron', sans-serif; 
+            background: linear-gradient(135deg, #000428, #004e92);
+            color: #0ff; 
+            margin: 0;
+            padding: 0;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 60%;
+            margin: 100px auto;
+            display: flex;
+            flex-direction: column;
+            gap: 150px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .section {
+            background: rgba(0, 0, 0, 0.9);
+            border: 3px solid red;
+            padding: 50px 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px red;
+            min-height: 400px;
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        .section h2 {
+            text-align: center;
+            color: red;
+            text-transform: uppercase;
+        }
+
+        input, textarea {
+            width: 100%;
+            max-width: 400px;
+            background: #111;
+            color: #0ff;
+            border: 2px solid red;
+            padding: 10px;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        button {
+            background: red;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background: #ff0;
+            color: #000;
+        }
+
+        /* Estilização da imagem do personagem */
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        #foto-preview {
+            width: 300px;
+            height: 300px;
+            border: 2px solid red;
+            display: block;
+            object-fit: cover;
+            margin-right: 20px;
+        }
+
+        .info-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .settings {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        .settings-icon {
+            cursor: pointer;
+            font-size: 24px;
+        }
+
+        #settings-panel {
+            display: none;
+            position: absolute;
+            top: 40px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 10px;
+            border: 2px solid red;
+        }
+
+        /* Glitches */
+        @keyframes glitch {
+            0% { opacity: 0; transform: translateX(0); }
+            50% { opacity: 1; transform: translateX(10px); }
+            100% { opacity: 0; transform: translateX(0); }
+        }
+
+        .glitch-box {
+            position: absolute;
+            width: 50px;
+            height: 20px;
+            background: rgba(255, 0, 0, 0.5);
+            animation: glitch 0.3s infinite;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        function showImage(event) {
+            const preview = document.getElementById('foto-preview');
+            const file = event.target.files[0];
+            const reader = new FileReader();
+            reader.onload = function() {
+                preview.src = reader.result;
+                preview.style.display = 'block';
+            }
+            if (file) {
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function toggleSettings() {
+            const panel = document.getElementById('settings-panel');
+            panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function createGlitch() {
+            const glitch = document.createElement('div');
+            glitch.className = 'glitch-box';
+            document.body.appendChild(glitch);
+
+            const x = Math.random() * window.innerWidth;
+            const y = Math.random() * window.innerHeight;
+            glitch.style.left = `${x}px`;
+            glitch.style.top = `${y}px`;
+
+            glitch.style.display = 'block';
+            setTimeout(() => {
+                glitch.remove();
+            }, 300);
+        }
+        setInterval(createGlitch, 4000);
+    </script>
+
+    <div class="container">
+        <!-- Cabeçalho -->
+        <div class="section">
+            <h2>Cabeçalho</h2>
+            <div class="settings">
+                <span class="settings-icon" onclick="toggleSettings()">⚙️</span>
+                <div id="settings-panel">
+                    <label>Foto do Personagem: <input type="file" id="foto" accept="image/png, image/jpeg" onchange="showImage(event)"></label>
+                </div>
+            </div>
+            <div class="header-container">
+                <img id="foto-preview" style="display: none;">
+                <div class="info-container">
+                    <label>Nome: <input type="text" id="nome"></label>
+                    <label>Idade: <input type="text" id="idade"></label>
+                    <label>Jogador: <input type="text" id="jogador"></label>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
